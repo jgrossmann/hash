@@ -1,0 +1,6 @@
+to do:
+change getHash to accept a parameter based on mutex read or write
+update getHash to only lock based on parameter or not at all
+destroy mutexes when freeing
+change add to add nodes at the beginning of buckets
+
