@@ -23,7 +23,6 @@ typedef struct {
 
 } hashtable_t;
 
-hashtable_t hashtable_t_instance = {NULL,0};
 
 // create a new hashtable; parameter is a size hint
 hashtable_t *hashtable_new(int);
