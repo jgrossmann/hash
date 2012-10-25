@@ -22,13 +22,13 @@ struct args {
 void *hasher_thread(void *v) {
     struct args *args = (struct args *)v;
     
-    fprintf(stderr,"Thread %lu running\n", (unsigned long)pthread_self());
+    fprintf(stderr,"Thread %p running\n", pthread_self());
     int start_value = random() % args->num_words;
     int values_to_add = args->max_values;
 
     int i = 0;
     for (i = 0; i < values_to_add; i++) {
-        hashtable_add(args->hash, args->words[start_value + i % args->num_words]);
+        hashtable_add(args->hash, args->words[(start_value + i) % args->num_words]);
     }
     
     pthread_mutex_lock(&args->done_adding_mutex);
@@ -42,7 +42,7 @@ void *hasher_thread(void *v) {
     pthread_mutex_unlock(&args->done_adding_mutex);
     
     for (i = 0; i < values_to_add; i++) {
-        hashtable_remove(args->hash, args->words[start_value + i % args->num_words]);
+        hashtable_remove(args->hash, args->words[(start_value + i) % args->num_words]);
     }
     return NULL;
 }

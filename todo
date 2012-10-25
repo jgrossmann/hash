@@ -1,3 +1,2 @@
-Malloc and free all mutexes?
-if too slow limit the number of mutexes to about 20 percent
-
+make beginning bucket mutex be pointed to by added on nodes and new mutexes
+*new mutex = &old mutex
