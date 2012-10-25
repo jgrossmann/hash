@@ -112,16 +112,9 @@ void hashtable_add(hashtable_t *hashtable, const char *s) {
 		newnode->string = malloc(sizeof(char)*strlen(s)+1);
 		strcpy(newnode->string,s); 
 		newnode->previous = NULL; newnode->stringstat = 1; newnode->nextstat = 1; newnode->prevstat = 0;
-		//newnode->mutex_R = malloc(sizeof(pthread_mutex_t));
-		//newnode->mutex_W = malloc(sizeof(pthread_mutex_t));
-		//pthread_mutex_init(newnode->mutex_W,NULL); pthread_mutex_init(newnode->mutex_R,NULL);
-		//pthread_mutex_lock(newnode->mutex_R);
 		newnode->mutex_R = h->mutex_R; newnode->mutex_W = h->mutex_W;
 		newnode->next = h;hashtable->htable[hash] = newnode;
 		h->previous = newnode; h->prevstat = 1;
-		//pthread_mutex_unlock(h->mutex_R);
-		//pthread_mutex_destroy(h->mutex_W); pthread_mutex_destroy(h->mutex_R);
-		//free(h->mutex_W); free(h->mutex_R);
 	}
 	pthread_mutex_unlock(hashtable->htable[hash]->mutex_R);
 }
@@ -156,16 +149,9 @@ void hashtable_remove(hashtable_t *hashtable, const char *s) {
 				pthread_mutex_unlock(hashtable->htable[hash]->mutex_R);
 				return;
 			}
-			//h->next->mutex_R = malloc(sizeof(pthread_mutex_t));
-			//h->next->mutex_W = malloc(sizeof(pthread_mutex_t));
-			//pthread_mutex_init(h->next->mutex_W,NULL); pthread_mutex_init(h->next->mutex_R,NULL);
-			//pthread_mutex_lock(h->next->mutex_W); pthread_mutex_lock(h->next->mutex_R);
 			h->next->mutex_R = h->mutex_R; h->next->mutex_W = h->mutex_W;
 			hashtable->htable[hash] = h->next;
 			hashtable->htable[hash]->prevstat = 0;
-			//pthread_mutex_unlock(h->mutex_R); pthread_mutex_unlock(h->mutex_W);
-			//pthread_mutex_destroy(h->mutex_W); pthread_mutex_destroy(h->mutex_R);
-			//free(h->mutex_W); free(h->mutex_R);
 			free(h->string); free(h);
 			pthread_mutex_unlock(hashtable->htable[hash]->mutex_W);
 			pthread_mutex_unlock(hashtable->htable[hash]->mutex_R);
